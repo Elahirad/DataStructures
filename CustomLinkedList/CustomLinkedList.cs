@@ -1,6 +1,6 @@
 using System;
 
-namespace CustomLinkedList
+namespace CustomArray
 {
     public class CustomLinkedList
     {
@@ -18,11 +18,11 @@ namespace CustomLinkedList
         {
             if (IsEmpty)
             {
-                _head = _tail = new Node() {Data = item};
+                _head = _tail = new Node() { Data = item };
             }
             else
             {
-                var data = new Node() {Data = item, Next = _head};
+                var data = new Node() { Data = item, Next = _head };
                 _head = data;
             }
 
@@ -31,7 +31,7 @@ namespace CustomLinkedList
 
         public void AddLast(object item)
         {
-            var data = new Node() {Data = item};
+            var data = new Node() { Data = item };
             if (IsEmpty)
                 _head = _tail = data;
             else
@@ -79,6 +79,51 @@ namespace CustomLinkedList
             _size--;
         }
 
+        /*public void Reverse() // My first implementation... Bad Idea
+        {
+            for (var i = _size; i > 0; i--)
+            {
+                var buffer = _head;
+                Node previousItem = null;
+                var j = 1;
+                while (j < i)
+                {
+                    previousItem = buffer;
+                    buffer = buffer.Next;
+                    j++;
+                }
+
+                buffer.Next = previousItem;
+            }
+
+            var newTail = _head;
+            _head = _tail;
+            _tail = newTail;
+        }*/
+
+        public void Reverse()
+        {
+            if (IsEmpty) return;
+            var first = _head;
+            var second = first.Next;
+            var third = second.Next;
+            while (true)
+            {
+                if (third == null)
+                {
+                    second.Next = first;
+                    break;
+                }
+                second.Next = first;
+                first = second;
+                second = third;
+                third = third.Next;
+            }
+            _head.Next = null;
+            var newTail = _head;
+            _head = _tail;
+            _tail = newTail;
+        }
         public bool Contains(object item)
         {
             var buffer = _head;
