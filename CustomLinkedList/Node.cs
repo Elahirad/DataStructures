@@ -1,4 +1,4 @@
-namespace CustomLinkedList
+namespace CLinkedList
 {
     public class Node
     {

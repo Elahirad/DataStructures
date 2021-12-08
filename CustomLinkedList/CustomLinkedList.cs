@@ -1,6 +1,4 @@
-using System;
-
-namespace CustomArray
+namespace CLinkedList
 {
     public class CustomLinkedList
     {
