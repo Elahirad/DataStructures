@@ -113,5 +113,20 @@ namespace Trees
             if (root.LeftChild == null && root.RightChild == null) return root.Value;
             return Math.Min(root.Value, Math.Min(CalculateMin(root.LeftChild), CalculateMin(root.RightChild)));
         }
+
+        public bool Equals(BinaryTree second)
+        {
+            if (second == null) throw new InvalidOperationException("Second tree is null");
+            return EqualityChecker(_root, second._root);
+        }
+
+        private bool EqualityChecker(Node root, Node to_check_root)
+        {
+            if (root == null && to_check_root == null) return true;
+            if (!(root != null && to_check_root != null)) return false;
+            return root.Value == to_check_root.Value
+                && EqualityChecker(root.LeftChild, to_check_root.LeftChild)
+                && EqualityChecker(root.RightChild, to_check_root.RightChild);
+        }
     }
 }
