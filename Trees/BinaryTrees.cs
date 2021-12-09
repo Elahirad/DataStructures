@@ -91,5 +91,27 @@ namespace Trees
             TraversePostOrder(root.RightChild);
             System.Console.WriteLine(root.Value);
         }
+
+        public int Height()
+        {
+            if (_root == null) return -1;
+            return CalculateHeight(_root);
+        }
+        private int CalculateHeight(Node root)
+        {
+            if (root.LeftChild == null && root.RightChild == null) return 0;
+            return Math.Max(CalculateHeight(root.LeftChild), CalculateHeight(root.RightChild)) + 1;
+        }
+
+        public int Min()
+        {
+            if (_root == null) return -1;
+            return CalculateMin(_root);
+        }
+        private int CalculateMin(Node root)
+        {
+            if (root.LeftChild == null && root.RightChild == null) return root.Value;
+            return Math.Min(root.Value, Math.Min(CalculateMin(root.LeftChild), CalculateMin(root.RightChild)));
+        }
     }
 }
