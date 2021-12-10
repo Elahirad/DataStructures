@@ -95,38 +95,64 @@ namespace Trees
         public int Height()
         {
             if (_root == null) return -1;
-            return CalculateHeight(_root);
+            return Height(_root);
         }
-        private int CalculateHeight(Node root)
+        private int Height(Node root)
         {
             if (root.LeftChild == null && root.RightChild == null) return 0;
-            return Math.Max(CalculateHeight(root.LeftChild), CalculateHeight(root.RightChild)) + 1;
+            return Math.Max(Height(root.LeftChild), Height(root.RightChild)) + 1;
         }
 
         public int Min()
         {
             if (_root == null) return -1;
-            return CalculateMin(_root);
+            return Min(_root);
         }
-        private int CalculateMin(Node root)
+        private int Min(Node root)
         {
             if (root.LeftChild == null && root.RightChild == null) return root.Value;
-            return Math.Min(root.Value, Math.Min(CalculateMin(root.LeftChild), CalculateMin(root.RightChild)));
+            return Math.Min(root.Value, Math.Min(Min(root.LeftChild), Min(root.RightChild)));
         }
 
         public bool Equals(BinaryTree second)
         {
             if (second == null) throw new InvalidOperationException("Second tree is null");
-            return EqualityChecker(_root, second._root);
+            return Equals(_root, second._root);
         }
 
-        private bool EqualityChecker(Node root, Node to_check_root)
+        private bool Equals(Node root, Node to_check_root)
         {
             if (root == null && to_check_root == null) return true;
             if (!(root != null && to_check_root != null)) return false;
             return root.Value == to_check_root.Value
-                && EqualityChecker(root.LeftChild, to_check_root.LeftChild)
-                && EqualityChecker(root.RightChild, to_check_root.RightChild);
+                && Equals(root.LeftChild, to_check_root.LeftChild)
+                && Equals(root.RightChild, to_check_root.RightChild);
         }
+        // First Implementation
+        public bool IsBinarySearchTree()
+        {
+            return IsBinarySearchTree(_root);
+        }
+        private bool IsBinarySearchTree(Node root)
+        {
+            if (root.LeftChild == null || root.RightChild == null) return true;
+            var left = IsBinarySearchTree(root.LeftChild);
+            var right = IsBinarySearchTree(root.RightChild);
+            return (root.Value > root.LeftChild.Value && root.Value < root.RightChild.Value) && left && right;
+        }
+
+        // Second Implementation
+        // public bool IsBinarySearchTree()
+        // {
+        //     return IsBinarySearchTree(_root, int.MinValue, int.MaxValue);
+        // }
+
+        // private bool IsBinarySearchTree(Node root, int min, int max)
+        // {
+        //     if (root == null) return true;
+        //     if (root.Value < min || root.Value > max) return false;
+        //     return IsBinarySearchTree(root.LeftChild, min, root.Value - 1)
+        //         && IsBinarySearchTree(root.RightChild, root.Value + 1, max);
+        // }
     }
 }
