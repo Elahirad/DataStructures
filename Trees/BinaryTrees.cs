@@ -92,6 +92,14 @@ namespace Trees
             System.Console.WriteLine(root.Value);
         }
 
+        public void TraverseLevelOrder()
+        {
+            for (var i = 0; i <= Height(); i++)
+            {
+                foreach (var j in GetNodesAtDistance(i)) System.Console.WriteLine(j);
+            }
+        }
+
         public int Height()
         {
             if (_root == null) return -1;
@@ -154,5 +162,37 @@ namespace Trees
         //     return IsBinarySearchTree(root.LeftChild, min, root.Value - 1)
         //         && IsBinarySearchTree(root.RightChild, root.Value + 1, max);
         // }
+
+        public void PrintNodesAtDistance(int distance)
+        {
+            PrintNodeAtDistance(_root, distance);
+        }
+
+        private void PrintNodeAtDistance(Node root, int distance)
+        {
+            if (root == null) return;
+            if (distance == 0)
+            {
+                System.Console.WriteLine(root.Value);
+                return;
+            }
+            PrintNodeAtDistance(root.LeftChild, distance - 1);
+            PrintNodeAtDistance(root.RightChild, distance - 1);
+        }
+
+        public List<int> GetNodesAtDistance(int distance)
+        {
+            var arr = new List<int>();
+            GetNodesAtDistance(_root, distance, arr);
+            return arr;
+        }
+
+        private void GetNodesAtDistance(Node root, int distance, List<int> arr)
+        {
+            if (root == null) return;
+            if (distance == 0) arr.Add(root.Value);
+            GetNodesAtDistance(root.LeftChild, distance - 1, arr);
+            GetNodesAtDistance(root.RightChild, distance - 1, arr);
+        }
     }
 }
