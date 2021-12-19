@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace CustomStack
+namespace CustomStacks
 {
     public class CustomStack
     {
