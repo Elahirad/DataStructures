@@ -20,10 +20,12 @@ namespace Trees
             _count++;
         }
 
-        public void Remove()
+        public int Remove()
         {
+            var item = _arr[0];
             _arr[0] = _arr[--_count];
             if (!IsValidHeap(0)) BubbleDown(0);
+            return item;
         }
 
         private void BubbleDown(int index)
