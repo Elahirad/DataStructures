@@ -147,5 +147,18 @@ namespace Trees
         {
             return index * 2 + 2;
         }
+
+        public static int KThLargestNumber(int[] array, int kth)
+        {
+            if (kth < 1 || kth > array.Length) throw new InvalidOperationException("Invalid argument");
+            int result = 0;
+            var heap = new Heap(array.Length);
+            foreach (var number in array) heap.Insert(number);
+            for (var i = 0; i < kth; i++)
+            {
+                result = heap.Remove();
+            }
+            return result;
+        }
     }
 }
