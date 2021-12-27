@@ -98,5 +98,54 @@ namespace Trees
             _arr[first] = _arr[second];
             _arr[second] = temp;
         }
+
+        public static int[] Heapify(int[] array)
+        {
+            for (var i = array.Length / 2 - 1; i >= 0; i--)
+            {
+                Heapify(array, i);
+            }
+            return array;
+        }
+
+        private static void Heapify(int[] array, int index)
+        {
+            int biggerChild;
+            if (!HasLeftChild(array, index)) return;
+            if (!HasRightChild(array, index)) biggerChild = LeftChildIndex(index);
+            else
+            {
+                biggerChild = array[LeftChildIndex(index)] > array[RightChildIndex(index)]
+                ? LeftChildIndex(index)
+                : RightChildIndex(index);
+            }
+            if (array[index] > array[biggerChild]) return;
+            Swap(array, index, biggerChild);
+            Heapify(array, biggerChild);
+
+        }
+
+        private static void Swap(int[] array, int first, int second)
+        {
+            var temp = array[first];
+            array[first] = array[second];
+            array[second] = temp;
+        }
+        private static bool HasLeftChild(int[] array, int index)
+        {
+            return LeftChildIndex(index) < array.Length;
+        }
+        private static bool HasRightChild(int[] array, int index)
+        {
+            return RightChildIndex(index) < array.Length;
+        }
+        private static int LeftChildIndex(int index)
+        {
+            return index * 2 + 1;
+        }
+        private static int RightChildIndex(int index)
+        {
+            return index * 2 + 2;
+        }
     }
 }
