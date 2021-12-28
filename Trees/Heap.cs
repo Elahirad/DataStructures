@@ -2,11 +2,11 @@ using System.Text;
 
 namespace Trees
 {
-    public class Heap
+    public class MaxHeap
     {
         private int[] _arr;
         private int _count;
-        public Heap(int capacity)
+        public MaxHeap(int capacity)
         {
             _arr = new int[capacity];
             _count = 0;
@@ -125,6 +125,21 @@ namespace Trees
 
         }
 
+        public static bool IsMaxHeap(int[] array)
+        {
+            return IsMaxHeap(array, 0);
+        }
+
+        private static bool IsMaxHeap(int[] array, int index)
+        {
+            if (!HasLeftChild(array, index)) return true;
+            if (!HasRightChild(array, index)) return array[index] >= array[LeftChildIndex(index)];
+            return array[index] >= array[LeftChildIndex(index)]
+                && array[index] >= array[RightChildIndex(index)]
+                && IsMaxHeap(array, LeftChildIndex(index))
+                && IsMaxHeap(array, RightChildIndex(index));
+        }
+
         private static void Swap(int[] array, int first, int second)
         {
             var temp = array[first];
@@ -152,13 +167,18 @@ namespace Trees
         {
             if (kth < 1 || kth > array.Length) throw new InvalidOperationException("Invalid argument");
             int result = 0;
-            var heap = new Heap(array.Length);
+            var heap = new MaxHeap(array.Length);
             foreach (var number in array) heap.Insert(number);
             for (var i = 0; i < kth; i++)
             {
                 result = heap.Remove();
             }
             return result;
+        }
+
+        public int[] ToArray()
+        {
+            return _arr;
         }
     }
 }
