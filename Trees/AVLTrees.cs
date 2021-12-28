@@ -82,5 +82,33 @@ namespace Trees
             var rightHeight = node.RightChild == null ? -1 : node.RightChild.Height;
             return Math.Max(leftHeight, rightHeight) + 1;
         }
+
+        public static bool IsBalanced(AVLTree tree)
+        {
+            return IsBalanced(tree._root);
+        }
+
+        private static bool IsBalanced(AVLNode root)
+        {
+            if (root == null) return true;
+            var leftHeight = root.LeftChild == null ? -1 : root.LeftChild.Height;
+            var rightHeight = root.RightChild == null ? -1 : root.RightChild.Height;
+            if (Math.Abs(leftHeight - rightHeight) > 1) return false;
+            return IsBalanced(root.LeftChild) && IsBalanced(root.RightChild);
+        }
+
+        public static bool IsPerfect(AVLTree tree)
+        {
+            return IsPerfect(tree._root);
+        }
+
+        private static bool IsPerfect(AVLNode root)
+        {
+            if (root == null) return true;
+            var leftHeight = root.LeftChild == null ? -1 : root.LeftChild.Height;
+            var rightHeight = root.RightChild == null ? -1 : root.RightChild.Height;
+            if (leftHeight != rightHeight) return false;
+            return IsPerfect(root.LeftChild) && IsPerfect(root.RightChild);
+        }
     }
 }
