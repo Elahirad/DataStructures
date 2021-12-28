@@ -1,13 +1,13 @@
 using Trees;
 namespace Queues
 {
-    public class HeapPQueue
+    public class MaxHeapPQueue
     {
-        private Heap _heap;
+        private MaxHeap _heap;
 
-        public HeapPQueue(int capacity)
+        public MaxHeapPQueue(int capacity)
         {
-            _heap = new Heap(capacity);
+            _heap = new MaxHeap(capacity);
         }
 
         public void Enqueue(int item)
