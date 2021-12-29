@@ -2,6 +2,116 @@ using System.Text;
 
 namespace Trees
 {
+
+    public class MinHeap
+    {
+        private int[] _arr;
+        private int _count;
+        public MinHeap(int capacity)
+        {
+            _arr = new int[capacity];
+        }
+
+        public void Insert(int item)
+        {
+            if (IsFull()) throw new InvalidOperationException("Heap is full");
+            _arr[_count] = item;
+            if (ShouldBubbleUp(_count))
+            {
+                BubbleUp(_count);
+            }
+            _count++;
+        }
+
+        public int Remove()
+        {
+            if (IsEmpty()) throw new InvalidOperationException("Heap is empty");
+            var item = _arr[0];
+            _arr[0] = _arr[--_count];
+            if (!IsValidHeap(0)) BubbleDown(0);
+            return item;
+        }
+
+        public bool IsEmpty()
+        {
+            return _count == 0;
+        }
+
+        public bool IsFull()
+        {
+            return _count == _arr.Length;
+        }
+
+        public int[] ToArray()
+        {
+            return _arr;
+        }
+        private void BubbleUp(int index)
+        {
+            while (index > 0 && ShouldBubbleUp(index))
+            {
+                var parent = (index - 1) / 2;
+                Swap(index, parent);
+                index = parent;
+
+            }
+        }
+
+        private void BubbleDown(int index)
+        {
+            while (index < _count && !IsValidHeap(index))
+            {
+                var smallerChild = SmallerChild(index);
+                Swap(index, smallerChild);
+                index = smallerChild;
+            }
+        }
+
+        private void Swap(int first, int second)
+        {
+            var temp = _arr[first];
+            _arr[first] = _arr[second];
+            _arr[second] = temp;
+        }
+
+        private int SmallerChild(int index)
+        {
+            if (!HasLeftChild(index)) return index;
+            if (!HasRightChild(index)) return LeftChild(index);
+            return _arr[LeftChild(index)] < _arr[RightChild(index)] ? LeftChild(index) : RightChild(index);
+        }
+        private bool ShouldBubbleUp(int index)
+        {
+            return _arr[index] < _arr[(index - 1) / 2];
+        }
+        private bool IsValidHeap(int index)
+        {
+            if (!HasLeftChild(index)) return true;
+            if (!HasRightChild(index)) return _arr[index] < _arr[LeftChild(index)];
+            return _arr[index] < _arr[LeftChild(index)]
+                && _arr[index] < _arr[RightChild(index)];
+        }
+
+        private bool HasLeftChild(int index)
+        {
+            return LeftChild(index) < _count;
+        }
+
+        private bool HasRightChild(int index)
+        {
+            return RightChild(index) < _count;
+        }
+        private int LeftChild(int index)
+        {
+            return 2 * index + 1;
+        }
+
+        private int RightChild(int index)
+        {
+            return 2 * index + 2;
+        }
+    }
+
     public class MaxHeap
     {
         private int[] _arr;
@@ -22,6 +132,7 @@ namespace Trees
 
         public int Remove()
         {
+            if (IsEmpty()) throw new InvalidOperationException("Heap is empty");
             var item = _arr[0];
             _arr[0] = _arr[--_count];
             if (!IsValidHeap(0)) BubbleDown(0);
