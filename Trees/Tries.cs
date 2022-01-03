@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Text;
+
 namespace Trees
 {
     public class Trie
@@ -16,6 +18,10 @@ namespace Trees
                 this.IsEndOfWord = false;
             }
 
+            public char[] GetKeys()
+            {
+                return this._dict.Keys.ToArray<char>();
+            }
             public bool HasAnyChild()
             {
                 return this._dict.Keys.ToList<char>().Count > 0;
@@ -92,6 +98,38 @@ namespace Trees
             Remove(child, item, index + 1);
             if (!child.HasAnyChild() && !child.IsEndOfWord)
                 root.RemoveChild(child.Value);
+        }
+        public List<string> FindWords(string prefix)
+        {
+            var results = new List<string>();
+            FindWords(prefix, results, SetBuffer(prefix));
+            return results;
+        }
+
+        private void FindWords(string prefix, List<string> wordList, TrieNode buffer)
+        {
+            if (buffer == null) return;
+            foreach (var childKey in buffer.GetKeys())
+            {
+                var child = buffer.GetChild(childKey);
+                var childValue = buffer.GetChild(childKey).Value;
+                var newPrefix = prefix + childValue;
+                if (child.IsEndOfWord) wordList.Add(newPrefix);
+                FindWords(newPrefix, wordList, child);
+            }
+
+        }
+
+        private TrieNode? SetBuffer(string prefix)
+        {
+            if (prefix == null) return null;
+            var buffer = _root;
+            foreach (var ch in prefix)
+            {
+                if (!buffer.HasChild(ch)) return null;
+                buffer = buffer.GetChild(ch);
+            }
+            return buffer;
         }
     }
 }
