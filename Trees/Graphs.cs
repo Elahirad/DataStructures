@@ -64,11 +64,9 @@ namespace Trees
             var result = new StringBuilder();
             foreach (var nodeKey in this._aList.Keys)
             {
-                var strB = new StringBuilder();
-                strB.Append($"{nodeKey} is connected with : ["
-                + string.Join(", ", this._aList[nodeKey])
-                + "]");
-                result.Append(strB.ToString() + '\n');
+                result.Append($"{nodeKey} is connected with : ["
+                    + string.Join(", ", this._aList[nodeKey])
+                    + "]" + '\n');
             }
             return result.ToString();
         }
