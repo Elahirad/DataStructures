@@ -81,6 +81,20 @@ namespace Trees
             return buffer.IsEndOfWord;
         }
 
+        public bool ContainsRecursive(string item)
+        {
+            return ContainsRecursive(item, 0, _root);
+        }
+
+        private bool ContainsRecursive(string item, int index, TrieNode buffer)
+        {
+            if (index >= item.Length) return true;
+            var ch = item[index];
+            if (!buffer.HasChild(ch)) return false;
+            var child = buffer.GetChild(ch);
+            return ContainsRecursive(item, index + 1, child);
+        }
+
         public void Remove(string item)
         {
             if (!Contains(item)) return;
@@ -98,6 +112,20 @@ namespace Trees
             Remove(child, item, index + 1);
             if (!child.HasAnyChild() && !child.IsEndOfWord)
                 root.RemoveChild(child.Value);
+        }
+
+        public int WordsCount()
+        {
+            return WordsCount(_root);
+        }
+
+        private int WordsCount(TrieNode buffer)
+        {
+            int sum = 0;
+            if (buffer.IsEndOfWord) sum++;
+            foreach (var childKey in buffer.GetKeys()) sum += WordsCount(buffer.GetChild(childKey));
+            return sum;
+
         }
         public List<string> FindWords(string prefix)
         {
@@ -130,6 +158,24 @@ namespace Trees
                 buffer = buffer.GetChild(ch);
             }
             return buffer;
+        }
+
+        public static string LongestCommonPrefix(string[] words)
+        {
+            if (words.Length == 0) return "";
+            var strB = new StringBuilder();
+            for (var i = 0; i < words[0].Length; i++)
+            {
+                var ch = words[0][i];
+                foreach (var word in words)
+                {
+                    if (i >= word.Length ||
+                        word[i] != ch) return strB.ToString();
+                }
+                strB.Append(ch);
+            }
+
+            return strB.ToString();
         }
     }
 }
