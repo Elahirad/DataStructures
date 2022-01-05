@@ -122,6 +122,32 @@ namespace Trees
             }
         }
 
+        public List<string> TopologicalSort()
+        {
+            var stack = new Stack<Node>();
+            var set = new HashSet<Node>();
+            foreach (var node in this._nodes.Values)
+                TopologicalSort(node, set, stack);
+            var result = new List<string>();
+            while (stack.Count != 0) result.Add(stack.Pop().ToString());
+            return result;
+        }
+
+        private void TopologicalSort(Node root, HashSet<Node> visited, Stack<Node> results)
+        {
+            if (visited.Contains(root)) return;
+            foreach (var node in this._aList[root])
+            {
+                TopologicalSort(node, visited, results);
+            }
+
+            if (!visited.Contains(root))
+            {
+                results.Push(root);
+                visited.Add(root);
+            }
+        }
+
         public override string ToString()
         {
             var result = new StringBuilder();
