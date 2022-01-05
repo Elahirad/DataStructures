@@ -98,6 +98,30 @@ namespace Trees
             }
         }
 
+        public void TraverseBreadthFirst(string label)
+        {
+            if (!this._nodes.ContainsKey(label)) throw new ArgumentException("Node not found !");
+            var set = new HashSet<Node>();
+            TraverseBreadthFirst(this._nodes[label], set);
+        }
+
+        private void TraverseBreadthFirst(Node root, HashSet<Node> visited)
+        {
+            var q = new Queue<Node>();
+            q.Enqueue(root);
+            while (q.Count != 0)
+            {
+                var buffer = q.Dequeue();
+                if (visited.Contains(buffer)) continue;
+                System.Console.WriteLine(buffer);
+                visited.Add(buffer);
+                foreach (var node in this._aList[buffer])
+                {
+                    if (!visited.Contains(node)) q.Enqueue(node);
+                }
+            }
+        }
+
         public override string ToString()
         {
             var result = new StringBuilder();
