@@ -148,6 +148,31 @@ namespace Trees
             }
         }
 
+        public bool HasCycle()
+        {
+            var all = new HashSet<Node>();
+            foreach (var node in this._nodes.Values) all.Add(node);
+            var visiting = new HashSet<Node>();
+            var visited = new HashSet<Node>();
+            foreach (var node in this._nodes.Values)
+                if (HasCycle(node, all, visiting, visited)) return true;
+            return false;
+        }
+
+        private bool HasCycle(Node root, HashSet<Node> all, HashSet<Node> visiting, HashSet<Node> visited)
+        {
+            if (root == null) return false;
+            all.Remove(root);
+            visiting.Add(root);
+            foreach (var node in this._aList[root])
+                if (visiting.Contains(node)) return true;
+                else
+                    return HasCycle(node, all, visiting, visited);
+            visiting.Remove(root);
+            visited.Add(root);
+            return false;
+        }
+
         public override string ToString()
         {
             var result = new StringBuilder();
