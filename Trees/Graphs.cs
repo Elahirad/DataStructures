@@ -59,6 +59,29 @@ namespace Trees
             this._aList[this._nodes[from]].Remove(this._nodes[to]);
         }
 
+        public void TraverseDepthFirstIterative(string label)
+        {
+            if (!this._nodes.ContainsKey(label)) throw new ArgumentException("Node not found !");
+            var set = new HashSet<Node>();
+            TraverseDepthFirstIterative(this._nodes[label], set);
+        }
+
+        private void TraverseDepthFirstIterative(Node root, HashSet<Node> visited)
+        {
+            var stack = new Stack<Node>();
+            stack.Push(root);
+            while (stack.Count != 0)
+            {
+                var buffer = stack.Pop();
+                if (visited.Contains(buffer)) continue;
+                System.Console.WriteLine(buffer);
+                visited.Add(buffer);
+                foreach (var node in this._aList[buffer])
+                {
+                    if (!visited.Contains(node)) stack.Push(node);
+                }
+            }
+        }
         public void TraverseDepthFirst(string label)
         {
             if (!this._nodes.ContainsKey(label)) throw new ArgumentException("Node not found!");
