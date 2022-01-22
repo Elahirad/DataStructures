@@ -140,5 +140,31 @@ namespace Trees
             }
             return result;
         }
+
+        public bool HasCycle()
+        {
+            var visited = new HashSet<Node>();
+            foreach (var node in _nodeDict.Values)
+            {
+                if ((!visited.Contains(node)) &&
+                    (HasCycle(node, new Node(""), visited))) return true;
+
+            }
+            return false;
+        }
+
+        private bool HasCycle(Node root, Node parent, HashSet<Node> visited)
+        {
+            visited.Add(root);
+            var edges = root.Edges();
+            foreach (var edge in edges.Keys)
+            {
+                if (parent == edge) continue;
+                if ((visited.Contains(edge)) ||
+                 (HasCycle(edge, root, visited))) return true;
+            }
+            visited.Add(root);
+            return false;
+        }
     }
 }
