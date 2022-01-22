@@ -42,6 +42,11 @@ namespace Trees
                 this.To = to;
                 this.Weight = weight;
             }
+
+            public override string ToString()
+            {
+                return $"{this.From.ToString()} -> {this.To.ToString()}";
+            }
         }
 
         private class NodeEntry
@@ -165,6 +170,34 @@ namespace Trees
             }
             visited.Add(root);
             return false;
+        }
+
+        public WeightedGraph SpanningTree(string value)
+        {
+            var startNode = _nodeDict[value];
+            var visited = new HashSet<Node>();
+            var pq = new PriorityQueue<Edge, int>();
+            var edges = startNode.Edges();
+            var result = new WeightedGraph();
+            foreach (var edge in edges.Keys)
+            {
+                pq.Enqueue(edges[edge], edges[edge].Weight);
+            }
+            result.AddNode(startNode.ToString());
+            while (result._nodeDict.Count != _nodeDict.Count)
+            {
+                var current = pq.Dequeue();
+                if (visited.Contains(current.From) || visited.Contains(current.To)) continue;
+                visited.Add(current.From);
+                result.AddNode(current.To.ToString());
+                result.AddEdge(current.From.ToString(), current.To.ToString(), current.Weight);
+                var toNodeEdges = current.To.Edges();
+                foreach (var edge in toNodeEdges.Values)
+                {
+                    pq.Enqueue(edge, edge.Weight);
+                }
+            }
+            return result;
         }
     }
 }
